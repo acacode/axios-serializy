@@ -1,0 +1,28 @@
+extends:
+  - standard
+  - prettier
+  - prettier/standard
+
+parser: babel-eslint
+
+plugins:
+  - standard
+  - prettier
+
+globals:
+  jasmine: true
+
+env:
+  browser: true
+
+rules:
+  no-var: error
+  prefer-const: error
+  prettier/prettier:
+    - error
+    - trailingComma: es5
+      singleQuote: true
+      semi: false
+
+  # TODO: The following rules should be removed incrementally in order to fully
+  # integrate lint rules from the Standard ESLint config and Prettier

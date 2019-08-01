@@ -1,0 +1,61 @@
+
+language: node_js
+node_js:
+  - "node"
+
+cache:
+  yarn: true
+  directories:
+    - "node_modules"
+
+before_install:
+  - export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+  - export NPM_REMOTE_VERSION=$(npm view axios-serializy version)
+  - export PACKAGE_NAME=$(node -p "require('./package.json').name")
+  - export BRANCH_IS_TAG=$(node -p "/^([0-9].[0-9].[0-9]+((-(alpha|beta))|))$/.test('${TRAVIS_BRANCH}')")
+  - export GIT_LOG="$(git log --pretty=format:"* %s (%h)")"
+  - export PROJECT_NAME="acacode/axios-serializy"
+  - export RELEASE_BODY=$(node -p "'[Click here to see release changes](https://github.com/$PROJECT_NAME/blob/$TRAVIS_BRANCH/CHANGELOG.md#' + require('./bin/getLatestTag.js') + ')'")
+
+install:
+  - yarn install --frozen-lockfile
+
+jobs:
+  include:
+    - stage: lint
+      script: yarn lint
+    - stage: test
+      script:
+        - yarn run build
+        - yarn test
+    # - stage: publish
+    #   if: env(BRANCH_IS_TAG) != true AND branch = master AND type = push
+    #   name: "Create Github Release"
+    #   before_deploy:
+    #     - git config --global user.email "builds@travis-ci.com"
+    #     - git config --global user.name "Travis CI"
+    #     - git tag $PACKAGE_VERSION -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER from $TRAVIS_BRANCH"
+    #     - git push -q https://$GITHUB_TOKEN@github.com/$PROJECT_NAME --tags
+    #     - zip -r release.zip dist lib es src index.d.ts LICENSE README.md package.json
+    #     - ls -l
+    #   deploy:
+    #     provider: releases
+    #     name: "Release ${PACKAGE_VERSION}"
+    #     body: "$RELEASE_BODY"
+    #     overwrite: true
+    #     skip_cleanup: true
+    #     api_key:
+    #       secure: ${GITHUB_TOKEN}
+    #     file:
+    #       - release.zip
+    #     on:
+    #       all_branches: true
+    #       repo: $PROJECT_NAME
+    #   after_deploy:
+    #     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+    #     - npm publish
+
+# notifications:
+#   slack:
+#     rooms:
+#       secure: NmTpLAVX83pyyKJnTAyCy89XAJioG7dUM86CMl2V7u2Z3BdN4++Ee6pfTQkzrjZ6ITz+kil4Jpn8Vo5AHU18gmDwaqV+xrV2TX3Z58umPXY3tMR4s9STjDukUUhYn6H5m2cwcdScW+00s+aR8KUSkY49YtF3Kbha+EO1rA8/cpT8rINDz9ecUPH6AWuOIWbwpFiUQtrXUUxA9yKoGBRHRy5XX4r3GWuMRBKC4dTk0m1Z9kLgTmpi2ICrPmvzKyMtLspoqJWMO1n7d0saRW7mepJ34alCjaoUGi1lzHqwimCT87pCvwDIF4tXrRVmpCp4ZS1hTYeH/TedJcn+qw1abmmYaeC6fzSCB6DlWWQSJ4NI73pOzWKhQ1Q1SSd/x7ScWy+9K8CNY7jUoUVSMka1fBgeNeGxqezYl1A1GEa/iW6r0uiTOnQYC80UNtCnCbeB4kR6TeofECGWXMwuKOkT9gYnrvR0edGZmwmGqSFiLte86A1rxk3eoQr8NONMr11mkbeAe0hNbcG7TGojy4AwlY/q0VKpw7if0Wo9Hft/26sahFMawT7XvM9QmIs7+/QUnSEdVMDFy/qphQNlSUqNAMJX7U/5dtjc13WUAeNwg6gGAwoaAuE2mysFUYxbtD/KjlYStGFXhGJXilx2MVDZal2ZtDXGxKtIMV1xNF5QwaM=
