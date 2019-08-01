@@ -8,9 +8,9 @@ let errorModel = null
 
 axios.interceptors.request.use(
   function(config) {
-    const { data } = deserializeRequestData(config.model, options.data, {
-      method,
-      url,
+    const { data } = deserializeRequestData(config.model, config.data, {
+      method: config.method,
+      url: config.url,
     })
 
     config.data = data
@@ -24,32 +24,42 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   function(response) {
-    const { data } = serializeResponseData(options.model, response.data, {
-      method,
-      url,
-      isError: false,
-    })
+    const { data } = serializeResponseData(
+      response.config.model,
+      response.data,
+      {
+        method: response.config.method,
+        url: response.config.url,
+        isError: false,
+      }
+    )
 
     response.data = data
 
     return response
   },
   function(error) {
-    return Promise.reject(
-      errorModel
-        ? serializeResponseData(options.model, response.data, {
-            method,
-            url,
-            isError: true,
-            errorModel,
-            error,
-          })
-        : error
-    )
+    if (errorModel && error.response) {
+      const { error: serializedError } = serializeResponseData(
+        error.config.model,
+        null,
+        {
+          method: error.config.method,
+          url: error.config.url,
+          isError: true,
+          errorModel,
+          error: error.response.data,
+        }
+      )
+
+      error.response.data = serializedError
+    }
+
+    return Promise.reject(error)
   }
 )
 
-export function attackErrorModel(_errorModel) {
+export function attachErrorModel(_errorModel) {
   errorModel = _errorModel
 }
 
