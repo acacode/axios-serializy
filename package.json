@@ -11,7 +11,7 @@
     "clean": "rimraf lib dist es",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "prepare": "yarn clean && yarn build",
+    "prepare": "npm run clean && npm run build",
     "test": "exit 0"
   },
   "author": {

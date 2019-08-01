@@ -25,13 +25,13 @@
 
 <!-- ```js
 import kinka from 'kinka'
-import KinkaSerializy from 'axios-serializy'
+import axiosSerializy from 'axios-serializy'
 
 
 const api = kinka.create({
   baseURL: 'https://your-api.com',
   middlewares: [
-    KinkaSerializy
+    axiosSerializy
   ]
 })
 
@@ -51,7 +51,7 @@ Also if you want to serialize error messages from server you need to:
 const api = kinka.create({
   baseURL: 'https://your-api.com',
   middlewares: [
-    KinkaSerializy({
+    axiosSerializy({
       errorModel: YourPrettifiedErrorModel
     })
   ]

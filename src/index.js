@@ -4,7 +4,7 @@ import {
   serializeResponseData,
 } from 'http-helpers-serializy'
 
-let errorModel = null
+axios._errorModel = null
 
 axios.interceptors.request.use(
   function(config) {
@@ -39,7 +39,7 @@ axios.interceptors.response.use(
     return response
   },
   function(error) {
-    if (errorModel && error.response) {
+    if (axios._errorModel && error.response) {
       const { error: serializedError } = serializeResponseData(
         error.config.model,
         null,
@@ -47,7 +47,7 @@ axios.interceptors.response.use(
           method: error.config.method,
           url: error.config.url,
           isError: true,
-          errorModel,
+          errorModel: axios._errorModel,
           error: error.response.data,
         }
       )
@@ -59,8 +59,8 @@ axios.interceptors.response.use(
   }
 )
 
-export function attachErrorModel(_errorModel) {
-  errorModel = _errorModel
+axios.setErrorModel = function(_errorModel) {
+  axios._errorModel = _errorModel
 }
 
 export default axios
