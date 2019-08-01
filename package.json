@@ -2,7 +2,7 @@
   "name": "axios-serializy",
   "version": "0.0.1",
   "license": "MIT",
-  "description": "integration kinka with serializy",
+  "description": "integration axios with serializy",
   "main": "lib/axios-serializy.js",
   "unpkg": "dist/axios-serializy.js",
   "module": "es/axios-serializy.js",
