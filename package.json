@@ -1,6 +1,6 @@
 {
   "name": "axios-serializy",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "license": "MIT",
   "description": "integration kinka with serializy",
   "main": "lib/axios-serializy.js",
@@ -46,7 +46,7 @@
     "rollup-plugin-terser": "^4.0.4"
   },
   "keywords": [
-    "kinka",
+    "axios",
     "serializy",
     "javascript",
     "javascript-library"
