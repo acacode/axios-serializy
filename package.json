@@ -1,8 +1,8 @@
 {
   "name": "axios-serializy",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "license": "MIT",
-  "description": "integration kinka with serializy",
+  "description": "integration axios with serializy",
   "main": "lib/axios-serializy.js",
   "unpkg": "dist/axios-serializy.js",
   "module": "es/axios-serializy.js",
@@ -11,7 +11,7 @@
     "clean": "rimraf lib dist es",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "prepare": "yarn clean && yarn build",
+    "prepare": "npm run clean && npm run build",
     "test": "exit 0"
   },
   "author": {
@@ -46,15 +46,17 @@
     "rollup-plugin-terser": "^4.0.4"
   },
   "keywords": [
-    "kinka",
+    "axios",
     "serializy",
     "javascript",
     "javascript-library"
   ],
   "typings": "./index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "http-helpers-serializy": "0.0.1"
+  },
   "peerDependencies": {
-    "kinka": "^3.0.0-alpha.1",
+    "axios": "^0.19.0",
     "serializy": "^1.0.0-alpha.2"
   },
   "repository": {

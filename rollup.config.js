@@ -5,10 +5,7 @@ const replace = require('rollup-plugin-replace')
 const terser = require('rollup-plugin-terser').terser
 // const commonjs = require('rollup-plugin-commonjs')
 
-const deps = [
-  ...Object.keys(packageJson.dependencies || {}),
-  ...Object.keys(packageJson.peerDependencies || {}),
-]
+const deps = [...Object.keys(packageJson.peerDependencies || {})]
 
 const inputOutputConfig = (outputFile, outputFormat, commonOutput = {}) => ({
   input: 'src/index.js',
@@ -46,7 +43,12 @@ const productionBuildPlugins = [
           'response',
           'request',
           'isError',
-          'KinkaSerializy',
+          'interceptors',
+          'axiosSerializy',
+          'serializeResponseData',
+          'deserializeRequestData',
+          'use',
+          'setErrorModel',
         ],
       },
       module: true,
@@ -60,19 +62,19 @@ module.exports = [
   {
     ...inputOutputConfig('lib/axios-serializy.js', 'cjs'),
     external: deps,
-    plugins: [babel()],
+    plugins: [resolve(), babel()],
   },
   {
     ...inputOutputConfig('lib/axios-serializy.min.js', 'cjs'),
     external: deps,
-    plugins: [babel(), ...productionBuildPlugins],
+    plugins: [resolve(), babel(), ...productionBuildPlugins],
   },
 
   // EcmaScript builds
   {
     ...inputOutputConfig('es/axios-serializy.js', 'es'),
     external: deps,
-    plugins: [babel()],
+    plugins: [resolve(), babel()],
   },
   {
     ...inputOutputConfig('es/axios-serializy.mjs', 'es'),
@@ -83,7 +85,10 @@ module.exports = [
   // UMD builds
   {
     ...inputOutputConfig('dist/axios-serializy.js', 'umd', {
-      name: 'KinkaSerializy',
+      name: 'axiosSerializy',
+      globals: {
+        axios: 'axios',
+      },
     }),
     external: deps,
     plugins: [
@@ -98,7 +103,10 @@ module.exports = [
   },
   {
     ...inputOutputConfig('dist/axios-serializy.min.js', 'umd', {
-      name: 'KinkaSerializy',
+      name: 'axiosSerializy',
+      globals: {
+        axios: 'axios',
+      },
     }),
     external: deps,
     plugins: [

@@ -1,6 +1,6 @@
 <div align="center">
 
-  <h1>kinka + serializy</h1>
+  <h1>axios + serializy</h1>
 
   [![](https://img.shields.io/badge/license-MIT-red.svg)](./LICENSE)
   [![](https://img.shields.io/npm/v/axios-serializy.svg)](https://www.npmjs.com/package/axios-serializy)
@@ -21,18 +21,13 @@
     # or using yarn
     $ yarn add axios-serializy
 
-<!-- ## 📚 Usage   -->
+## 📚 Usage  
 
-<!-- ```js
-import kinka from 'kinka'
-import KinkaSerializy from 'axios-serializy'
+```js
+import axios from 'axios-serializy'
 
-
-const api = kinka.create({
-  baseURL: 'https://your-api.com',
-  middlewares: [
-    KinkaSerializy
-  ]
+const api = axios.create({
+  baseURL: 'https://your-api.com'
 })
 
 // ...
@@ -44,20 +39,17 @@ const { data } = await api.get('/client/1234', {
 console.log(data) // your serialized client model
 ```  
 
-Also if you want to serialize error messages from server you need to:  
+Also if you want to serialize error messages from server you need to call `axios.setErrorModel(Model)`  
+Before creating axios instance
 
 ```js
+axios.setErrorModel(YourPrettifiedErrorModel)
 
-const api = kinka.create({
-  baseURL: 'https://your-api.com',
-  middlewares: [
-    KinkaSerializy({
-      errorModel: YourPrettifiedErrorModel
-    })
-  ]
+const api = axios.create({
+  baseURL: 'https://your-api.com'
 })
 
-``` -->
+```
 
 
 ## 📝 License
