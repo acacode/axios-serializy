@@ -52,9 +52,11 @@
     "javascript-library"
   ],
   "typings": "./index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "http-helpers-serializy": "0.0.1"
+  },
   "peerDependencies": {
-    "kinka": "^3.0.0-alpha.1",
+    "axios": "^0.19.0",
     "serializy": "^1.0.0-alpha.2"
   },
   "repository": {
